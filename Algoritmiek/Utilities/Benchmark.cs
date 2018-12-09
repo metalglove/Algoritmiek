@@ -1,8 +1,11 @@
-﻿namespace Algoritmiek
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Algoritmiek.Utilities
 {
     /// <summary>
     /// Represents a benchmark of an action.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public struct Benchmark
     {
         /// <summary>

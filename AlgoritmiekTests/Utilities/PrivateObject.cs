@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace AlgoritmiekTests.Utilities
@@ -7,6 +8,7 @@ namespace AlgoritmiekTests.Utilities
     /// Represents an encapsulated object with the intent to access private members.
     /// </summary>
     /// <typeparam name="TObjectType">The object type to access private members for.</typeparam>
+    [ExcludeFromCodeCoverage]
     public class PrivateObject<TObjectType> where TObjectType : class
     {
         /// <summary>
