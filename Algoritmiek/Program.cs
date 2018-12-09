@@ -8,7 +8,7 @@ namespace Algoritmiek
     /// <summary>
     /// Represents the main program that will run all other programs.
     /// </summary>
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// Gets the dictionary that holds benchmarks per Type of Program that has ran.
@@ -95,8 +95,8 @@ namespace Algoritmiek
         /// Benchmark the specified <see cref="Action"/>.
         /// </summary>
         /// <param name="action">The action to be benchmarked.</param>
-        /// <param name="displayTimings">A value indicating whether the benchmark timings should be writen to the <see cref="Console"/>.</param>
-        /// <param name="displayEvents">A value indicating whether the events should be writen to the <see cref="Console"/>.</param>
+        /// <param name="displayTimings">A value indicating whether the benchmark timings should be written to the <see cref="Console"/>.</param>
+        /// <param name="displayEvents">A value indicating whether the events should be written to the <see cref="Console"/>.</param>
         /// <returns>The benchmark of the action that has been invoked.</returns>
         private static Benchmark BenchmarkAction(Action action, bool displayTimings, bool displayEvents = false)
         {
@@ -119,9 +119,9 @@ namespace Algoritmiek
         /// <param name="stopwatch">The stopwatch the timings should be displayed for.</param>
         private static void DisplayTimings(Stopwatch stopwatch)
         {
-            Console.WriteLine("Time elapsed (s): {0}", stopwatch.Elapsed.TotalSeconds);
-            Console.WriteLine("Time elapsed (ms): {0}", stopwatch.Elapsed.TotalMilliseconds);
-            Console.WriteLine("Time elapsed (ns): {0}", stopwatch.Elapsed.TotalMilliseconds * 1000000);
+            Console.WriteLine($"Time elapsed (s): {stopwatch.Elapsed.TotalSeconds}");
+            Console.WriteLine($"Time elapsed (ms): {stopwatch.Elapsed.TotalMilliseconds}");
+            Console.WriteLine($"Time elapsed (ns): {stopwatch.Elapsed.TotalMilliseconds * 1000000}");
         }
 
         /// <summary>

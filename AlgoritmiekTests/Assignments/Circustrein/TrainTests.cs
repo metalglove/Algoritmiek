@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Algoritmiek.Circustrein;
 using AlgoritmiekTests.Utilities;
@@ -30,6 +31,14 @@ namespace AlgoritmiekTests.Assignments.Circustrein
             PrivateObject<Train> privateObject = new PrivateObject<Train>(ref train, "Carriages", PrivateType.Property);
             IList<TrainCarriage> carriages = privateObject.Value;
             Assert.IsTrue(carriages.Count.Equals(4));
+        }
+
+        [TestMethod]
+        public void Sort_Should_Throw_ArgumentException_With_Empty_Animal_Queue()
+        {
+            Train train = new Train();
+            ArgumentException exception = Assert.ThrowsException<ArgumentException>(() => train.Sort(new Queue<Animal>()));
+            Assert.AreEqual(exception.Message, "The queue of animals cannot be empty.");
         }
 
         [TestMethod]
@@ -72,7 +81,6 @@ namespace AlgoritmiekTests.Assignments.Circustrein
                     "TryToAddAnimalToAnyOfTheTrainCarriages", 
                     PrivateType.MethodWithReturnValue, 
                     new object[]{ new Animal(Size.Big, EatingBehaviour.Carnivore) });
-
             bool isAdded = privateObject.Value;
             Assert.IsFalse(isAdded);
         }
@@ -90,7 +98,6 @@ namespace AlgoritmiekTests.Assignments.Circustrein
                     "TryToAddAnimalToAnyOfTheTrainCarriages",
                     PrivateType.MethodWithReturnValue,
                     new object[] { new Animal(Size.Big, EatingBehaviour.Herbivore) });
-
             bool isAdded = privateObject.Value;
             Assert.IsTrue(isAdded);
         }

@@ -51,6 +51,7 @@ namespace AlgoritmiekTests.Utilities
         /// <param name="name">The name of the private member.</param>
         /// <param name="privateType">The type of the private member to access.</param>
         /// <param name="args">The arguments for the Method</param>
+        /// <exception cref="MemberAccessException"></exception>
         public PrivateObject(ref TObjectType obj, string name, PrivateType privateType, object[] args)
         {
             Type objType = typeof(TObjectType);
