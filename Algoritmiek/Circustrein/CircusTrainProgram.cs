@@ -16,23 +16,17 @@ namespace Algoritmiek.Circustrein
         public Queue<Animal> Animals { get; private set; }
 
         /// <summary>
-        /// Gets or sets the train for the circus animals to be put in to.
+        /// Gets or sets the train for the circus animals to be put on to.
         /// </summary>
         public Train Train { get; private set; }
 
-        /// <summary>
-        /// Gets the name of the program.
-        /// </summary>
-        public string Name => "Case - CircusTrain";
+        /// <inheritdoc cref="IProgram.Name"/>
+        public string Name => GetType().Name;
 
-        /// <summary>
-        /// Gets the description of the program.
-        /// </summary>
+        /// <inheritdoc cref="IProgram.Description"/>
         public string Description => "Sort animals into train carriages accordingly.";
 
-        /// <summary>
-        /// Gets a value indicating whether <see cref="Setup"/> has ran.
-        /// </summary>
+        /// <inheritdoc cref="IProgram.Description"/>
         public bool HasSetupRan { get; private set; }
 
         /// <summary>

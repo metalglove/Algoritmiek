@@ -5,14 +5,14 @@ using System.Linq;
 namespace Algoritmiek.Circustrein
 {
     /// <summary>
-    /// Represents a train for the traincarriages to be put on to. 
+    /// Represents a train for the train carriages to be put on to. 
     /// </summary>
     public class Train
     {
         /// <summary>
         /// Gets the list of train carriages.
         /// </summary>
-        public IList<TrainCarriage> Carriages { get; }
+        private IList<TrainCarriage> Carriages { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Train"/> class.
@@ -23,19 +23,18 @@ namespace Algoritmiek.Circustrein
         }
 
         /// <summary>
-        /// Sorts the animals into train carriages.
+        /// Sorts the animals into train carriages and adds new train carriages where needed.
         /// </summary>
         /// <param name="animals">The animals to be sorted into train carriages.</param>
         public void Sort(Queue<Animal> animals)
         {
             if (!animals.Any())
                 throw new ArgumentException("The queue of animals cannot be empty.");
-            Animal animal = animals.Dequeue();
-            Carriages.Add(new TrainCarriage(animal));
+            Carriages.Add(new TrainCarriage(animals.Dequeue()));
             while (animals.Any())
             {
-                animal = animals.Dequeue();
-                if (!TryToAddAnimalIntoAnyOfTheTrainCarriages(animal))
+                Animal animal = animals.Dequeue();
+                if (!TryToAddAnimalToAnyOfTheTrainCarriages(animal))
                     Carriages.Add(new TrainCarriage(animal));
             }
         }
@@ -45,12 +44,7 @@ namespace Algoritmiek.Circustrein
         /// </summary>
         /// <param name="animal">The animal to be added into a train carriage.</param>
         /// <returns><c>true</c> if the animal was added into a train carriage; otherwise, <c>false</c>.</returns>
-        private bool TryToAddAnimalIntoAnyOfTheTrainCarriages(Animal animal)
-        {
-            for (int counter = 0; counter < Carriages.Count; counter++)
-                if (Carriages[counter].TryAddAnimal(animal))
-                    return true;
-            return false;
-        }
+        private bool TryToAddAnimalToAnyOfTheTrainCarriages(Animal animal) 
+            => Carriages.Any(carriage => carriage.TryAddAnimal(animal));
     }
 }

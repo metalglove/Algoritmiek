@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 
 namespace Algoritmiek
 {
@@ -44,7 +43,8 @@ namespace Algoritmiek
 
             foreach (IProgram program in GetPrograms())
             {
-                Console.WriteLine($"Runs: {Runs.ToString("N0")}");
+                DisplayProgramInformation(program);
+                Console.WriteLine($"Runs: {Runs:N0}");
                 DisplayBenchmarkInformation(program, actionName: ((Action)program.Setup).Method.Name);
                 DisplayBenchmarkInformation(program, actionName: ((Action)program.Run).Method.Name);
             }
@@ -83,7 +83,7 @@ namespace Algoritmiek
         /// Displays the program information in the <see cref="Console"/>.
         /// </summary>
         /// <param name="program">The program to display the information for.</param>
-        private static void DiplayProgramInformation(IProgram program)
+        private static void DisplayProgramInformation(IProgram program)
         {
             Console.WriteLine();
             Console.WriteLine(program.Name);
