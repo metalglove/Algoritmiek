@@ -43,7 +43,5 @@ namespace AlgoritmiekTests.Assignments.Circustrein
             Assert.IsFalse(trainCarriage.TryAddAnimal(new Animal(Size.Medium, EatingBehaviour.Carnivore)));
             Assert.IsFalse(trainCarriage.TryAddAnimal(new Animal(Size.Small, EatingBehaviour.Carnivore)));
         }
-
-        // Sorteer 10 animals en bekijk of het resultaat goed is
     }
 }
