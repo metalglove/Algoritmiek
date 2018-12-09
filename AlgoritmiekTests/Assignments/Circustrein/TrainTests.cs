@@ -42,7 +42,7 @@ namespace AlgoritmiekTests.Assignments.Circustrein
         }
 
         [TestMethod]
-        public void Carriages_Should_Be_Empty_Up_on_Creation_Of_Train()
+        public void Carriages_Should_Be_Empty_Up_On_Creation_Of_Train()
         {
             Train train = new Train();
             PrivateObject<Train> privateObject = new PrivateObject<Train>(ref train, "Carriages", PrivateType.Property);
