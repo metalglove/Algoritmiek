@@ -44,6 +44,7 @@ namespace Algoritmiek.Utilities
         /// </summary>
         public void Run(bool displayTimings = false, bool displayEvents = false)
         {
+            Console.WriteLine("Running...");
             for (int i = 0; i < _runs; i++)
             {
                 foreach (IProgram program in _programs)
@@ -58,7 +59,7 @@ namespace Algoritmiek.Utilities
                     _programBenchmarks[program.GetType()].Add(runBenchmark);
                 }
             }
-
+            Console.WriteLine("Finished!");
             foreach (IProgram program in _programs)
             {
                 DisplayProgramInformation(program);
