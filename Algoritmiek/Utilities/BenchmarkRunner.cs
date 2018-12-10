@@ -45,28 +45,25 @@ namespace Algoritmiek.Utilities
         public void Run(bool displayTimings = false, bool displayEvents = false)
         {
             Console.WriteLine("Running...");
-            for (int i = 0; i < _runs; i++)
+            foreach (IProgram program in _programs)
             {
-                foreach (IProgram program in _programs)
+                if (!_programBenchmarks.ContainsKey(program.GetType()))
+                    _programBenchmarks.Add(program.GetType(), new List<Benchmark>());
+                for (int i = 0; i < _runs; i++)
                 {
-                    if (!_programBenchmarks.ContainsKey(program.GetType()))
-                        _programBenchmarks.Add(program.GetType(), new List<Benchmark>());
-
                     Benchmark setupBenchmark = BenchmarkAction(program.Setup, displayTimings, displayEvents);
                     _programBenchmarks[program.GetType()].Add(setupBenchmark);
 
                     Benchmark runBenchmark = BenchmarkAction(program.Run, displayTimings, displayEvents);
                     _programBenchmarks[program.GetType()].Add(runBenchmark);
                 }
-            }
-            Console.WriteLine("Finished!");
-            foreach (IProgram program in _programs)
-            {
+
                 DisplayProgramInformation(program);
                 Console.WriteLine($"Runs: {_runs:N0}");
                 DisplayBenchmarkInformation(program, actionName: ((Action)program.Setup).Method.Name);
                 DisplayBenchmarkInformation(program, actionName: ((Action)program.Run).Method.Name);
             }
+            Console.WriteLine("Finished!");
         }
 
         /// <summary>
