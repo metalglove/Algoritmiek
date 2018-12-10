@@ -42,19 +42,8 @@ namespace AlgoritmiekTests.Assignments.Circustrein
         public void Setup_Should_Create_Queue_With_50_Animals()
         {
             CircusTrainProgram circusTrainProgram = new CircusTrainProgram();
-            Assert.IsNull(circusTrainProgram.Animals);
             circusTrainProgram.Setup();
-            Assert.IsNotNull(circusTrainProgram.Animals);
             Assert.IsTrue(circusTrainProgram.Animals.Count.Equals(50));
-        }
-
-        [TestMethod]
-        public void Setup_Should_Create_Train()
-        {
-            CircusTrainProgram circusTrainProgram = new CircusTrainProgram();
-            Assert.IsNull(circusTrainProgram.Train);
-            circusTrainProgram.Setup();
-            Assert.IsNotNull(circusTrainProgram.Train);
         }
 
         [TestMethod]
