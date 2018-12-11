@@ -3,7 +3,8 @@
 namespace Algoritmiek.Circustrein
 {
     /// <summary>
-    /// Represents the implementation for the "Circustrein" assignment. See <see cref="Description"/> for a short description.
+    /// Represents the implementation for the "Circustrein" assignment.
+    /// See <see cref="Description"/> for a short description.
     /// <para>
     /// A detailed description can be found under the Assignments folder in "Circustrein.txt".
     /// </para> 
@@ -26,11 +27,11 @@ namespace Algoritmiek.Circustrein
         /// <inheritdoc cref="IProgram.Description"/>
         public string Description => "Sort animals into train carriages accordingly.";
 
-        /// <inheritdoc cref="IProgram.Description"/>
+        /// <inheritdoc cref="IProgram.HasSetupRan"/>
         public bool HasSetupRan { get; private set; }
 
         /// <summary>
-        /// Sets up a queue of 50 Animals.
+        /// Sets up a queue of 50 Animals and initializes the train.
         /// </summary>
         public void Setup()
         {

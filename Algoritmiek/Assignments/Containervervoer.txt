@@ -11,7 +11,8 @@ Het gewicht van een container is dus afhankelijk van de inhoud en kan dus afwijk
 Een lege container weegt al 4000 kg!
 
 Een container kan ook waardevolle lading bevatten. 
-In dat geval mag er helemaal niets bovenop de container worden gestapeld en moet de lading via de voor- of achterkant te benaderen zijn. 
+In dat geval mag er helemaal niets bovenop de container worden gestapeld en moet de lading via de voor- 
+of achterkant te benaderen zijn. 
 Anders kan de inhoud van de container niet verzekerd worden.
 
 Er zijn ook containers die gekoeld vervoerd moeten worden. 
@@ -44,4 +45,5 @@ Maak aan de hand van jouw ontwerp een programma dat indelingen kan maken voor co
 Houd rekening met alle eisen die zijn gesteld aan de containers, schepen en de indeling. 
 Een andere tip is het maken van unit tests die controleren dat geen van bovengenoemde eisen is overtreden. 
 Het moet mogelijk zijn om aan te geven hoeveel containers van iedere soort vervoerd dienen te worden. 
-Om het resultaat inzichtelijk te maken is het ook aan te raden om een duidelijke visualisatie te maken zodat per laag ingezien kan worden welke container zich waar bevindt.
+Om het resultaat inzichtelijk te maken is het ook aan te raden om een duidelijke visualisatie te maken 
+zodat per laag ingezien kan worden welke container zich waar bevindt.
