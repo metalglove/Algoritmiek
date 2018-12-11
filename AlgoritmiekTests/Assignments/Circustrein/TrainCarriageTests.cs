@@ -13,10 +13,7 @@ namespace AlgoritmiekTests.Assignments.Circustrein
         public void TrainCarriage_Should_Contain_1_Animal_Up_On_Creation()
         {
             TrainCarriage trainCarriage = new TrainCarriage(new Animal(Size.Big, EatingBehaviour.Carnivore));
-            PrivateObject<TrainCarriage> privateObject = 
-                new PrivateObject<TrainCarriage>(ref trainCarriage, "_animals", PrivateType.Field);
-            List<Animal> animals = privateObject.Value;
-            Assert.IsTrue(animals.Count.Equals(1));
+            Assert.IsTrue(trainCarriage.Animals.Count.Equals(1));
         }
 
         [TestMethod]
@@ -24,11 +21,8 @@ namespace AlgoritmiekTests.Assignments.Circustrein
         {
             TrainCarriage trainCarriage = new TrainCarriage(new Animal(Size.Big, EatingBehaviour.Herbivore));
             Assert.IsTrue(trainCarriage.TryAddAnimal(new Animal(Size.Big, EatingBehaviour.Herbivore)));
-            PrivateObject<TrainCarriage> privateObject =
-                new PrivateObject<TrainCarriage>(ref trainCarriage, "_animals", PrivateType.Field);
-            List<Animal> animals = privateObject.Value;
-            Assert.IsTrue(animals.Count.Equals(2));
-            Assert.IsTrue(animals.Where(anml => anml.Size.Equals(Size.Big) && anml.EatingBehaviour.Equals(EatingBehaviour.Herbivore)).ToList().Count.Equals(2));
+            Assert.IsTrue(trainCarriage.Animals.Count.Equals(2));
+            Assert.IsTrue(trainCarriage.Animals.Where(anml => anml.Size.Equals(Size.Big) && anml.EatingBehaviour.Equals(EatingBehaviour.Herbivore)).ToList().Count.Equals(2));
         }
 
         [TestMethod]

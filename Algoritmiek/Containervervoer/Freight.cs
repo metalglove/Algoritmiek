@@ -10,15 +10,9 @@
         /// </summary>
         public readonly double Weight;
 
-        /// <summary>
-        /// The type of freight.
-        /// </summary>
-        public readonly FreightType FreightType;
-
-        public Freight(double weight, FreightType freightType = FreightType.Default)
+        public Freight(double weight)
         {
             Weight = weight;
-            FreightType = freightType;
         }
     }
 }

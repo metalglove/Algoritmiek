@@ -3,26 +3,31 @@
     /// <summary>
     /// Represents a standardized container for shipping.
     /// </summary>
-    public class Container
+    public abstract class Container : IContainer
     {
         /// <summary>
-        /// The freight for the container.
+        /// Gets the freight for the container.
         /// </summary>
-        private readonly Freight _freight;
+        public Freight Freight { get; }
+
+        /// <summary>
+        /// Gets the current weight of the container.
+        /// </summary>
+        public double Weight => Freight.Weight + DefaultWeight;
 
         /// <summary>
         /// The default weight of the container in kilograms.
         /// </summary>
-        private const int DefaultWeight = 4_000;
+        public const double DefaultWeight = 4_000;
 
         /// <summary>
         /// The maximum weight of the container with contents in kilograms.
         /// </summary>
-        private const int MaxWeight = 30_000;
+        public const double MaxWeight = 30_000;
 
         public Container(Freight freight)
         {
-            _freight = freight;
+            Freight = freight;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Algoritmiek.Circustrein
         /// <summary>
         /// Gets the list of train carriages.
         /// </summary>
-        private IList<TrainCarriage> Carriages { get; }
+        public IList<TrainCarriage> Carriages { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Train"/> class.

@@ -28,9 +28,7 @@ namespace AlgoritmiekTests.Assignments.Circustrein
                 new Animal(Size.Medium, EatingBehaviour.Carnivore)
             };
             train.Sort(new Queue<Animal>(animals));
-            PrivateObject<Train> privateObject = new PrivateObject<Train>(ref train, "Carriages", PrivateType.Property);
-            IList<TrainCarriage> carriages = privateObject.Value;
-            Assert.IsTrue(carriages.Count.Equals(4));
+            Assert.IsTrue(train.Carriages.Count.Equals(4));
         }
 
         [TestMethod]
@@ -45,9 +43,7 @@ namespace AlgoritmiekTests.Assignments.Circustrein
         public void Carriages_Should_Be_Empty_Up_On_Creation_Of_Train()
         {
             Train train = new Train();
-            PrivateObject<Train> privateObject = new PrivateObject<Train>(ref train, "Carriages", PrivateType.Property);
-            IList<TrainCarriage> carriages = privateObject.Value;
-            Assert.IsFalse(carriages.Any());
+            Assert.IsFalse(train.Carriages.Any());
         }
 
         [TestMethod]
@@ -63,9 +59,7 @@ namespace AlgoritmiekTests.Assignments.Circustrein
                 new Animal(Size.Medium, EatingBehaviour.Carnivore)
             };
             train.Sort(new Queue<Animal>(animals));
-            PrivateObject<Train> privateObject = new PrivateObject<Train>(ref train, "Carriages", PrivateType.Property);
-            IList<TrainCarriage> carriages = privateObject.Value;
-            Assert.IsTrue(carriages.Any());
+            Assert.IsTrue(train.Carriages.Any());
         }
 
         [TestMethod]

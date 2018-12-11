@@ -98,6 +98,7 @@ namespace Algoritmiek.Circustrein
             if (!HasSetupRan)
                 throw new SetupNotRanException();
             Train.Sort(Animals);
+            TrainPrinter.Print(Train);
         }
     }
 }
