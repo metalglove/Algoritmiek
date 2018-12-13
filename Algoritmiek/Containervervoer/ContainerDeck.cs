@@ -114,29 +114,26 @@ namespace Algoritmiek.Containervervoer
         {
             double left = 0;
             double right = 0;
-
-            if (Width % 2 == 0)
+            for (int i = 0; i < Length; i++)
+            for (int k = 0; k < Height; k++)
             {
-                int width = Width / 2;
-                for (int i = 0; i < Length; i++)
-                for (int k = 0; k < Height; k++)
+                if (Width % 2 == 0)
                 {
+                    int width = Width / 2;
                     for (int j = 0; j < width; j++)
                         if (this[i, j, k] != null)
                             left += this[i, j, k].Weight;
                     for (int j2 = width; j2 < Width; j2++)
                         if (this[i, j2, k] != null)
                             right += this[i, j2, k].Weight;
+
                 }
-            }
-            else
-            {
-                int widthLeft = (int)Math.Floor((double)Width / 2) - 1;
-                int middle = widthLeft + 1;
-                int widthRight = middle + 1;
-                for (int i = 0; i < Length; i++)
-                for (int k = 0; k < Height; k++)
+                else
                 {
+                    int widthLeft = (int)Math.Floor((double)Width / 2) - 1;
+                    int middle = widthLeft + 1;
+                    int widthRight = middle + 1;
+
                     for (int j = 0; j <= widthLeft; j++)
                         if (this[i, j, k] != null)
                             left += this[i, j, k].Weight;

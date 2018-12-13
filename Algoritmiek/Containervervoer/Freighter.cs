@@ -79,13 +79,10 @@ namespace Algoritmiek.Containervervoer
                 valuableContainersPlacedCount = valuableContainerCount - valuableContainers.Count;
             }
 
+            int minimumReeferContainersToPlace = reeferContainers.Count; // does not need to check for minimum any more because this is the last time we are adding containers.
+            ContainerDeck.TryAddContainersOnTop(ref reeferContainers, minimumReeferContainersToPlace);
             int reeferContainersPlacedCount = reeferContainerCount - reeferContainers.Count;
-            if (reeferContainersPlacedCount < minReeferContainers)
-            {
-                int minimumContainersToPlace = minReeferContainers - reeferContainersPlacedCount;
-                ContainerDeck.TryAddContainersOnTop(ref reeferContainers, minimumContainersToPlace);
-                reeferContainersPlacedCount = reeferContainerCount - reeferContainers.Count;
-            }
+
 
             FreighterPrinter.PrintFreighter(this);
 

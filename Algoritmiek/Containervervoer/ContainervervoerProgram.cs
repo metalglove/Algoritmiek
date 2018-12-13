@@ -38,7 +38,7 @@ namespace Algoritmiek.Containervervoer
         /// <inheritdoc />
         public void Setup()
         {
-            Freighter = new Freighter(6, 5, 6);
+            Freighter = new Freighter(6, 5, 5);
 
             #region Adds
             //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
