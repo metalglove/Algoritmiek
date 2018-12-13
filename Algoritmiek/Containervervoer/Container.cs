@@ -6,7 +6,7 @@ namespace Algoritmiek.Containervervoer
     /// Represents a standardized container for shipping.
     /// </summary>
     [DebuggerDisplay("{ToString()}")]
-    public abstract class Container : IContainer
+    public abstract class Container
     {
         /// <summary>
         /// Gets the freight for the container.
@@ -31,7 +31,7 @@ namespace Algoritmiek.Containervervoer
         /// <summary>
         /// Initializes a new instance of the abstract <see cref="Container"/> class.
         /// </summary>
-        /// <param name="freight"></param>
+        /// <param name="freight">The freight for the container.</param>
         protected Container(Freight freight)
         {
             Freight = freight;

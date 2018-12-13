@@ -5,8 +5,14 @@ using System.Linq;
 
 namespace Algoritmiek.Containervervoer
 {
+    /// <summary>
+    /// Represents the container deck.
+    /// </summary>
     public class ContainerDeck
     {
+        /// <summary>
+        /// The freighter this container deck belongs too.
+        /// </summary>
         private readonly Freighter _freighter;
 
         /// <summary>
@@ -53,7 +59,7 @@ namespace Algoritmiek.Containervervoer
         /// <param name="x">The x-coordinate.</param>
         /// <param name="y">The y-coordinate.</param>
         /// <param name="z">The z-coordinate.</param>
-        /// <returns>The container on the specified x, y & z-coordinate.</returns>
+        /// <returns>The container on the given x, y & z-coordinate.</returns>
         public Container this[int x, int y, int z]
         {
             get => _containerDeckIn3D[x, y, z];
@@ -64,8 +70,8 @@ namespace Algoritmiek.Containervervoer
         /// Gets or sets a container from/on the container deck by <see cref="Location"/>
         /// </summary>
         /// <param name="location">The location for the container.</param>
-        /// <returns>The container on the specified x, y & z-coordinate using <see cref="Location"/>.</returns>
-        public Container this[Location location]
+        /// <returns>The container on the given x, y & z-coordinate using <see cref="Location"/>.</returns>
+        private Container this[Location location]
         {
             get => this[location.X, location.Y, location.Z];
             set => this[location.X, location.Y, location.Z] = value;
@@ -87,13 +93,19 @@ namespace Algoritmiek.Containervervoer
             _containerDeckIn3D = new Container[length, width, height];
         }
 
+        /// <summary>
+        /// Tries to add dry containers on top of the other dry containers.
+        /// </summary>
+        /// <param name="dryContainers">The dry containers to add on top of the other dry containers.</param>
+        /// <param name="minimumContainersToPlace">The minimum containers it needs to place.</param>
+        /// <param name="minValuableContainers">The minimum valuable containers it needs to leave space for.</param>
         public void TryAddDryContainersOnTop(ref List<DryContainer> dryContainers, int minimumContainersToPlace, int minValuableContainers)
         {
-            int maxPlaces = Width * Length;
-            if (minValuableContainers + minimumContainersToPlace > maxPlaces)
+            int maxSpaces = Width * Length;
+            if (minValuableContainers + minimumContainersToPlace > maxSpaces)
             {
                 // valuable containers are probably worth more... :)
-                minimumContainersToPlace = maxPlaces - minValuableContainers;
+                minimumContainersToPlace = maxSpaces - minValuableContainers;
             }
 
             List<DryContainer> unPlacableDryContainers = new List<DryContainer>();
@@ -119,7 +131,7 @@ namespace Algoritmiek.Containervervoer
                     break;
                 }
 
-                if (locationToDelete == default)
+                if (locationToDelete.Equals(default))
                     unPlacableDryContainers.Add(dryContainer);
                 else
                     freeLocations.Remove(locationToDelete);
@@ -129,6 +141,10 @@ namespace Algoritmiek.Containervervoer
                 dryContainers.Remove(placedDryContainer);
         }
 
+        /// <summary>
+        /// Gets the left and right weight of the freighter as a tuple.
+        /// </summary>
+        /// <returns>The left and right weight of the freighter as a tuple</returns>
         public Tuple<double, double> GetLeftAndRightWeights()
         {
             double left = 0;
@@ -173,39 +189,66 @@ namespace Algoritmiek.Containervervoer
             return new Tuple<double, double>(left, right);
         }
 
-        internal void TryAddValuableContainersOnTopOfReeferContainers(ref List<ValuableContainer> valuableContainers, int minimumContainersToPlace, int minReeferContainers)
+        public void TryAddValuableContainersOnTopOfReeferContainers(ref List<ValuableContainer> valuableContainers, int minimumContainersToPlace, int minReeferContainers)
         {
             throw new NotImplementedException();
         }
 
-        internal void TryAddLastRequiredReeferContainers(ref List<ReeferContainer> reeferContainers, int minimumContainersToPlace)
+        public void TryAddLastRequiredReeferContainers(ref List<ReeferContainer> reeferContainers, int minimumContainersToPlace)
         {
             throw new NotImplementedException();
         }
 
-        private struct GroupedItem
+        /// <summary>
+        /// Represents an indexed container.
+        /// </summary>
+        private struct IndexedContainer
         {
             public int Index { get; set; }
             public Container Container { get; set; }
         }
 
-        public void TryAddAllDryContainers(ref List<DryContainer> dryContainers)
+        /// <summary>
+        /// Tries to add all containers to the container deck.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="originalContainers"></param>
+        public void TryAddAllContainers<T>(ref List<T> originalContainers) where T : Container
         {
-            if (!dryContainers.Any())
+            // TODO: Check for originalContainers < 2 
+            if (!originalContainers.Any())
                 return;
-            // also create check for 1 container in reeferContainers
-            Dictionary<bool, IEnumerable<DryContainer>> groups = dryContainers.Select((item, index) => new GroupedItem { Container = item, Index = index})
+            List<Container> originalContainersCopyToCheckFrom = new List<Container>(originalContainers);
+            List<Container> originalContainersCopyToUse = new List<Container>(originalContainers);
+            Dictionary<bool, IEnumerable<Container>> groups = originalContainersCopyToUse.Select((item, index) => new IndexedContainer { Container = item, Index = index})
                 .GroupBy(x => x.Index % 2 == 0)
-                .ToDictionary(g => g.Key, g => g.Select(groupedItem => groupedItem.Container as DryContainer));
-            List<DryContainer> left = groups[false].ToList();
-            List<DryContainer> right = groups[true].ToList();
+                .ToDictionary(g => g.Key, g => g.Select(groupedItem => groupedItem.Container));
+            List<Container> left = groups[false].ToList();
+            List<Container> right = groups[true].ToList();
 
             int currentHeight = 0;
-            List<Location> rightLocations;
-            List<Location> leftLocations;
-            while (dryContainers.Any() && currentHeight < Height - 1)
+            while (originalContainersCopyToUse.Any() && currentHeight < Height - 1)
             {
-                List<Location> locations = GetLocationsForHeight(currentHeight).ToList();
+                List<Location> locations;
+                
+                if (typeof(T) == typeof(DryContainer))
+                {
+                    locations = GetLocationsForHeight(currentHeight).ToList();
+                }
+                else if(typeof(T) == typeof(ReeferContainer))
+                {
+                    locations = GetLocationsForLengthAndHeight(Length - 1, currentHeight).ToList();
+                }
+                else if (typeof(T) == typeof(ValuableContainer))
+                {
+                    locations = GetHighestFreeLocationsWithoutReeferLocations().ToList();
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
+                List<Location> rightLocations;
+                List<Location> leftLocations;
                 if (Width % 2 == 0)
                 {
                     rightLocations = locations.Where(location => location.Y >= Width / 2).OrderByDescending(location => location.Y).ToList();
@@ -221,103 +264,55 @@ namespace Algoritmiek.Containervervoer
                     List<Location> middleLocations = locations.Where(location => location.Y == middle).ToList();
 
                     int lengthHalf = (int)Math.Floor((double)Length / 2);
-                    List<DryContainer> middleContainers = currentHeight % 2 == 0 
-                        ? new List<DryContainer>(left.Take(lengthHalf).Union(right.Take(lengthHalf + (Length % 2 == 0 ? 1 : 0)).ToList())) 
-                        : new List<DryContainer>(right.Take(lengthHalf).Union(left.Take(lengthHalf + (Length % 2 == 0 ? 1 : 0)).ToList()));
+                    List<Container> middleContainers = currentHeight % 2 == 0 
+                        ? new List<Container>(left.Take(lengthHalf).Union(right.Take(lengthHalf + (Length % 2 == 0 ? 1 : 0)).ToList())) 
+                        : new List<Container>(right.Take(lengthHalf).Union(left.Take(lengthHalf + (Length % 2 == 0 ? 1 : 0)).ToList()));
 
-                    List<DryContainer> containersToRemove = new List<DryContainer>(middleContainers);
+                    List<Container> containersToRemove = new List<Container>(middleContainers);
                     if (middleContainers.Any())
-                        TryAddContainers(ref dryContainers, ref middleContainers, currentHeight, middleLocations);
+                        TryAddContainers(ref originalContainersCopyToUse, ref middleContainers, currentHeight, middleLocations);
 
-                    foreach (DryContainer dryContainer in containersToRemove.Except(middleContainers))
+                    foreach (Container dryContainer in containersToRemove.Except(middleContainers))
                     {
                         left.Remove(dryContainer);
                         right.Remove(dryContainer);
                     }
                 }
                 if (left.Any())
-                    TryAddContainers(ref dryContainers, ref left, currentHeight, leftLocations);
+                    TryAddContainers(ref originalContainersCopyToUse, ref left, currentHeight, leftLocations);
                 if (right.Any())
-                    TryAddContainers(ref dryContainers, ref right, currentHeight, rightLocations);
+                    TryAddContainers(ref originalContainersCopyToUse, ref right, currentHeight, rightLocations);
                 currentHeight++;
             }
-        }
-        public void TryAddAllValuableContainers(ref List<ValuableContainer> valuableContainers)
-        {
-            // TODO: make sure they are divided even
-            foreach (Location location in GetHighestFreeLocationsWithoutReeferLocations())
+
+            foreach (Container container in originalContainersCopyToCheckFrom.Except(originalContainersCopyToUse))
             {
-                ValuableContainer valuableContainer = valuableContainers.FirstOrDefault();
-                if (valuableContainer == default) return;
-                if (_freighter.CheckIfContainerExceedsMaximumWeight(valuableContainer)) return;
-                this[location] = valuableContainer;
-                valuableContainers.Remove(valuableContainer);
+                originalContainers.Remove(container as T);
             }
         }
-        public void TryAddAllReeferContainers(ref List<ReeferContainer> reeferContainers)
-        {
-            if (!reeferContainers.Any() || reeferContainers.Count <= 2)
-                throw new ArgumentException("reeferContainers is too small.");
-            // TODO: also create check for 1 container in reeferContainers
-            Dictionary<bool, IEnumerable<ReeferContainer>> groups = reeferContainers.Select((item, index) => new GroupedItem { Container = item, Index = index })
-                .GroupBy(x => x.Index % 2 == 0)
-                .ToDictionary(g => g.Key, g => g.Select(groupedItem => groupedItem.Container as ReeferContainer));
-            List<ReeferContainer> left = groups[false].ToList();
-            List<ReeferContainer> right = groups[true].ToList();
-
-            int currentHeight = 0;
-            List<Location> leftLocations;
-            List<Location> rightLocations;
-            while (reeferContainers.Any() && currentHeight < Height)
-            {
-                List<Location> locations = GetLocationsForLengthAndHeight(Length - 1, currentHeight).ToList();
-                if (Width % 2 == 0)
-                {
-                    rightLocations = locations.Where(location => location.Y >= Width / 2).OrderByDescending(location => location.Y).ToList();
-                    leftLocations = locations.Where(location => location.Y < Width / 2).OrderBy(location => location.Y).ToList();
-                }
-                else
-                {
-                    int widthLeft = (int)Math.Floor((double)Width / 2) - 1;
-                    int middle = widthLeft + 1;
-                    int widthRight = middle + 1;
-                    rightLocations = locations.Where(location => location.Y >= widthRight).OrderByDescending(location => location.Y).ToList();
-                    leftLocations = locations.Where(location => location.Y <= widthLeft).OrderBy(location => location.Y).ToList();
-                    List<Location> middleLocations = locations.Where(location => location.Y == middle).ToList();
-
-                    int lengthHalf = (int)Math.Floor((double)Length / 2);
-                    List<ReeferContainer> middleContainers = currentHeight % 2 == 0
-                        ? new List<ReeferContainer>(left.Take(lengthHalf).Union(right.Take(lengthHalf + (Length % 2 == 0 ? 1 : 0)).ToList()))
-                        : new List<ReeferContainer>(right.Take(lengthHalf).Union(left.Take(lengthHalf + (Length % 2 == 0 ? 1 : 0)).ToList()));
-
-                    List<ReeferContainer> containersToRemove = new List<ReeferContainer>(middleContainers);
-                    if (middleContainers.Any())
-                        TryAddContainers(ref reeferContainers, ref middleContainers, currentHeight, middleLocations);
-
-                    foreach (ReeferContainer dryContainer in containersToRemove.Except(middleContainers))
-                    {
-                        left.Remove(dryContainer);
-                        right.Remove(dryContainer);
-                    }
-                }
-                if (left.Any())
-                    TryAddContainers(ref reeferContainers, ref left, currentHeight, leftLocations);
-                if (right.Any())
-                    TryAddContainers(ref reeferContainers, ref right, currentHeight, rightLocations);
-                currentHeight++;
-            }
-        }
+      
+        /// <summary>
+        /// Gets containers from the given height.
+        /// </summary>
+        /// <param name="height">The given height.</param>
+        /// <returns>The containers on the given height.</returns>
         public Container[,] GetContainersFromHeight(int height)
         {
             Container[,] containers = new Container[Length, Width];
             for (int x = 0; x < Length; x++)
             for (int y = 0; y < Width; y++)
-            {
-                //
                 containers[x, y] = this[x, y, height];
-            }
             return containers;
         }
+
+        /// <summary>
+        /// Tries to add containers to the given locations.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="containers">The original containers to remove the added containers from.</param>
+        /// <param name="sideContainers">The containers to add to the given locations.</param>
+        /// <param name="currentHeight">The current height of the containers.</param>
+        /// <param name="sideLocations">The locations to add the containers to.</param>
         private void TryAddContainers<T>(ref List<T> containers, ref List<T> sideContainers, int currentHeight, IEnumerable<Location> sideLocations) where T : Container
         {
             foreach (Location location in sideLocations)
@@ -333,15 +328,19 @@ namespace Algoritmiek.Containervervoer
                         if (this[location.X, location.Y, i] == default) continue;
                         weightOnTopOfContainer += this[location.X, location.Y, i].Weight;
                     }
-                    if (weightOnTopOfContainer > 90_000) continue; // 90_000 is max so now we can also add a valuable container on top.
-                    //if (typeof(T) == typeof(DryContainer) && weightOnTopOfContainer > 90_000) continue; // 90_000 is max so now we can also add a valuable container on top.
-                    //if (typeof(T) == typeof(ReeferContainer) && weightOnTopOfContainer > 120_000) continue; // 120_000 is max so now we stop.
+                    if (typeof(T) == typeof(DryContainer) && weightOnTopOfContainer > 90_000) continue; // 90_000 is max so now we can also add a valuable container on top.
+                    if ((typeof(T) == typeof(ReeferContainer) || typeof(T) == typeof(ValuableContainer)) && weightOnTopOfContainer > 120_000) continue; // 120_000 is max so now we stop.
                 }
                 this[location] = container;
                 containers.Remove(container);
                 sideContainers.Remove(container);
             }
         }
+
+        /// <summary>
+        /// Gets the highest free locations without filtering (so full length).
+        /// </summary>
+        /// <returns>The highest free locations without filtering (so full length).</returns>
         private IEnumerable<Location> GetHighestFreeLocationsFullLength()
         {
             for (int x = 0; x < Length; x++)
@@ -353,18 +352,21 @@ namespace Algoritmiek.Containervervoer
                 z = Height;
             }
         }
+
+        /// <summary>
+        /// Gets the highest free locations with filtering (so without the reefer locations).
+        /// </summary>
+        /// <returns>The highest free locations with filtering (so without the reefer locations).</returns>
         private IEnumerable<Location> GetHighestFreeLocationsWithoutReeferLocations()
         {
-            // Length - 1, so the Reefers have more space
-            for (int x = 0; x < Length - 1; x++)
-            for (int y = 0; y < Width; y++)
-            for (int z = 0; z < Height; z++)
-            {
-                if (this[x, y, z] != null) continue;
-                yield return new Location(x, y, z);
-                z = Height;
-            }
+            return GetHighestFreeLocationsFullLength().Where(location => location.X != Length - 1);
         }
+
+        /// <summary>
+        /// Gets locations for the given height.
+        /// </summary>
+        /// <param name="height">The given height.</param>
+        /// <returns>The locations for the given height.</returns>
         private IEnumerable<Location> GetLocationsForHeight(int height)
         {
             // Length - 1, so the Reefers have more space
@@ -372,27 +374,55 @@ namespace Algoritmiek.Containervervoer
             for (int y = 0; y < Width; y++)
                 yield return new Location(x, y, height);
         }
+
+        /// <summary>
+        /// Gets the locations for the given height and length.
+        /// </summary>
+        /// <param name="length">The given height.</param>
+        /// <param name="height">The given length.</param>
+        /// <returns>The locations for the given height and length.</returns>
         private IEnumerable<Location> GetLocationsForLengthAndHeight(int length, int height)
         {
             for (int y = 0; y < Width; y++)
                 yield return new Location(length, y, height);
         }
-    }
-    [DebuggerDisplay("{ToString()}")]
-    public class Location
-    {
-        public int X { get; }
-        public int Y { get; }
-        public int Z { get; }
 
-        public Location(int x, int y, int z)
+        /// <summary>
+        /// Represents a location in the 3d container array.
+        /// </summary>
+        [DebuggerDisplay("{ToString()}")]
+        private struct Location
         {
-            X = x;
-            Y = y;
-            Z = z;
-        }
+            /// <summary>
+            /// Gets the X coordinate in 3d space.
+            /// </summary>
+            public int X { get; }
 
-        /// <inheritdoc />
-        public override string ToString() => $"X {X}, Y: {Y}, Z: {Z}";
+            /// <summary>
+            /// Gets the Y coordinate in 3d space.
+            /// </summary>
+            public int Y { get; }
+
+            /// <summary>
+            /// Gets the Z coordinate in 3d space.
+            /// </summary>
+            public int Z { get; }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Location"/> class.
+            /// </summary>
+            /// <param name="x">The X coordinate in 3d space.</param>
+            /// <param name="y">The Y coordinate in 3d space.</param>
+            /// <param name="z">The Z coordinate in 3d space.</param>
+            public Location(int x, int y, int z)
+            {
+                X = x;
+                Y = y;
+                Z = z;
+            }
+
+            /// <inheritdoc />
+            public override string ToString() => $"X {X}, Y: {Y}, Z: {Z}";
+        }
     }
 }

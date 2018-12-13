@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Algoritmiek.Circustrein
 {
+    /// <summary>
+    /// Provides methods to print a <see cref="Train"/> object to the console.
+    /// </summary>
     public static class TrainPrinter
     {
         private const string TableSplitter = "|";

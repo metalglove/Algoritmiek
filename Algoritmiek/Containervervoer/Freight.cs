@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Algoritmiek.Containervervoer
+﻿namespace Algoritmiek.Containervervoer
 {
     /// <summary>
     /// Represents 
@@ -17,6 +15,11 @@ namespace Algoritmiek.Containervervoer
         /// </summary>
         public readonly FreightType FreightType;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Freight"/> struct.
+        /// </summary>
+        /// <param name="weight"></param>
+        /// <param name="freightType"></param>
         public Freight(double weight, FreightType freightType)
         {
             Weight = weight;

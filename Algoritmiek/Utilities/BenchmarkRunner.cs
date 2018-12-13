@@ -83,18 +83,18 @@ namespace Algoritmiek.Utilities
         }
 
         /// <summary>
-        /// Gets the benchmarks for the specified <see cref="IProgram"/> and action that has ran.
+        /// Gets the benchmarks for the given <see cref="IProgram"/> and action that has ran.
         /// </summary>
         /// <param name="program">The program that the benchmarks need to be get for.</param>
         /// <param name="actionName">The action name within the program the benchmarks need to be get for.</param>
-        /// <returns>The benchmarks for the specified <see cref="IProgram"/> and action that has ran.</returns>
+        /// <returns>The benchmarks for the given <see cref="IProgram"/> and action that has ran.</returns>
         private IEnumerable<Benchmark> GetBenchmarksFor(IProgram program, string actionName)
         {
             return _programBenchmarks[program.GetType()].Where(bench => bench.Action.Equals(actionName));
         }
 
         /// <summary>
-        /// Benchmark the specified <see cref="Action"/>.
+        /// Benchmark the given <see cref="Action"/>.
         /// </summary>
         /// <param name="action">The action to be benchmarked.</param>
         /// <param name="displayTimings">A value indicating whether the benchmark timings should be written to the <see cref="Console"/>.</param>

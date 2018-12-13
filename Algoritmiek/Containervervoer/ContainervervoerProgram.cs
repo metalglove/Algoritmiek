@@ -38,7 +38,6 @@ namespace Algoritmiek.Containervervoer
         /// <inheritdoc />
         public void Setup()
         {
-            HasSetupRan = true;
             Freighter = new Freighter(4, 5, 6);
 
             #region Adds
@@ -211,12 +210,13 @@ namespace Algoritmiek.Containervervoer
             Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
             #endregion Adds
 
+            HasSetupRan = true;
         }
 
         /// <inheritdoc />
         public void Run()
         {
-            Freighter.Sort(Containers, 0, 0, 0);
+            Freighter.Sort(Containers, 40, 8, 8);
         }
     }
 }

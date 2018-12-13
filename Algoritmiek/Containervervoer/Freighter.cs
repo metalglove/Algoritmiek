@@ -44,7 +44,7 @@ namespace Algoritmiek.Containervervoer
         /// <param name="minDryContainers">The minimum required dry containers to be placed.</param>
         public void Sort(List<Container> containers, int minDryContainers, int minValuableContainers, int minReeferContainers)
         {
-            List<ValuableContainer> valuableContainers = containers.OfType<ValuableContainer>().ToList();
+            List<ValuableContainer> valuableContainers = containers.OfType<ValuableContainer>().OrderByDescending(container => container.Weight).ToList();
             List<ReeferContainer> reeferContainers = containers.OfType<ReeferContainer>().OrderByDescending(container => container.Weight).ToList();
             List<DryContainer> dryContainers = containers.OfType<DryContainer>().OrderByDescending(container => container.Weight).ToList();
 
@@ -59,8 +59,8 @@ namespace Algoritmiek.Containervervoer
             if (minReeferContainers > reeferContainerCount)
                 throw new ArgumentOutOfRangeException(nameof(minReeferContainers));
 
-            ContainerDeck.TryAddAllDryContainers(ref dryContainers);
-            ContainerDeck.TryAddAllReeferContainers(ref reeferContainers);
+            ContainerDeck.TryAddAllContainers(ref dryContainers);
+            ContainerDeck.TryAddAllContainers(ref reeferContainers);
             int dryContainersPlacedCount = dryContainerCount - dryContainers.Count;
             if (dryContainersPlacedCount < minDryContainers)
             {
@@ -69,7 +69,9 @@ namespace Algoritmiek.Containervervoer
                 dryContainersPlacedCount = dryContainerCount - dryContainers.Count;
             }
 
-            ContainerDeck.TryAddAllValuableContainers(ref valuableContainers);
+            ContainerDeck.TryAddAllContainers(ref valuableContainers);
+
+            //ContainerDeck.TryAddAllValuableContainers(ref valuableContainers);
 
             int valuableContainersPlacedCount = valuableContainerCount - valuableContainers.Count;
             if (valuableContainersPlacedCount < minValuableContainers)
@@ -98,7 +100,7 @@ namespace Algoritmiek.Containervervoer
             double weightDifference = weights.Item1 > weights.Item2
                 ? weights.Item1 - weights.Item2
                 : weights.Item2 - weights.Item1;
-            double weightDifferenceInPercentage = weightDifference / marge;
+            double weightDifferenceInPercentage = weightDifference / Weight;
             bool minimumWeightIsMet = Weight >= MaximumWeight / 2;
 
             bool minimumDryContainersPlacedIsMet = dryContainersPlacedCount > minDryContainers;

@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Algoritmiek.Containervervoer
 {
+    /// <summary>
+    /// Provides methods to print a <see cref="Freighter"/> object to the console.
+    /// </summary>
     public static class FreighterPrinter
     {
         private const char CellLeftTop = '┌';
@@ -17,7 +20,12 @@ namespace Algoritmiek.Containervervoer
         private const char CellHorizontalLine = '─';
         private const char CellVerticalLine = '│';
 
-        public static void PrintFreighter(Freighter freighter)
+        /// <summary>
+        /// Prints the freighter to the console.
+        /// </summary>
+        /// <param name="freighter">The freighter to be printed.</param>
+        /// <param name="detailed">Determines if the freighter should be printed in detail.</param>
+        public static void PrintFreighter(Freighter freighter, bool detailed = false)
         {
             Console.WriteLine();
             Console.WriteLine("D = Dry container");
@@ -29,24 +37,38 @@ namespace Algoritmiek.Containervervoer
                 Container[,] containersFromHeight = freighter.ContainerDeck.GetContainersFromHeight(i);
                 PrintContainerDeckByHeight(containersFromHeight, i);
                 Console.WriteLine();
-                PrintContainers(containersFromHeight, i);
+                if (!detailed) continue;
+                PrintDetailedContainersByHeight(containersFromHeight, i);
                 Console.WriteLine();
             }
         }
 
-        private static void PrintContainers(Container[,] containers, int z)
+        /// <summary>
+        /// Prints detailed container information by height.
+        /// </summary>
+        /// <param name="containers">The containers for print the detailed information for.</param>
+        /// <param name="height">The height of the containers.</param>
+        private static void PrintDetailedContainersByHeight(Container[,] containers, int height)
         {
             double totalWeight = 0;
             for (int y = 0; y < containers.GetLength(1); y++)
             for (int x = 0; x < containers.GetLength(0); x++)
             {
                 if (containers[x, y] == default) continue;
-                Console.WriteLine($"X: {x} Y: {y} Z: {z} Type: {containers[x, y].GetType().Name} Weight: {containers[x, y].Weight}");
+                Console.WriteLine($"X: {x} Y: {y} Z: {height} Type: {containers[x, y].GetType().Name} Weight: {containers[x, y].Weight}");
                 totalWeight += containers[x, y].Weight;
-                Console.WriteLine($"Total deck {z:00} weight: {totalWeight}");
+                Console.WriteLine($"Total deck {height:00} weight: {totalWeight}");
             }
         }
 
+        /// <summary>
+        /// Prints containers by height.
+        /// </summary>
+        /// <remarks>
+        /// This code should not be reused it truly is magic!
+        /// </remarks>
+        /// <param name="containers">The containers to print.</param>
+        /// <param name="height">The height of the containers.</param>
         private static void PrintContainerDeckByHeight(Container[,] containers, int height)
         {
             StringBuilder stringBuilder = new StringBuilder();
