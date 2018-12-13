@@ -38,7 +38,8 @@ namespace Algoritmiek.Containervervoer
         /// <inheritdoc />
         public void Setup()
         {
-            Freighter = new Freighter(6, 5, 5);
+            //Freighter = new Freighter(4, 3, 5); // is not allowed to set sail.
+            Freighter = new Freighter(6, 5, 5); // is allowed to set sail
 
             #region Adds
             //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
@@ -222,7 +223,10 @@ namespace Algoritmiek.Containervervoer
         /// <inheritdoc />
         public void Run()
         {
-            Freighter.Sort(Containers, 40, 8, 8);
+            if (!HasSetupRan)
+                throw new SetupNotRanException();
+
+            Freighter.Sort(Containers, 40, 12, 12);
         }
     }
 }

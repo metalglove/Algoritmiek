@@ -61,6 +61,7 @@ namespace Algoritmiek.Containervervoer
 
             ContainerDeck.TryAddAllContainers(ref dryContainers);
             ContainerDeck.TryAddAllContainers(ref reeferContainers);
+
             int dryContainersPlacedCount = dryContainerCount - dryContainers.Count;
             if (dryContainersPlacedCount < minDryContainers)
             {
@@ -83,10 +84,8 @@ namespace Algoritmiek.Containervervoer
             ContainerDeck.TryAddContainersOnTop(ref reeferContainers, minimumReeferContainersToPlace);
             int reeferContainersPlacedCount = reeferContainerCount - reeferContainers.Count;
 
-
             FreighterPrinter.PrintFreighter(this);
 
-            // check for left over containers and report them
             Tuple<double, double> weights = ContainerDeck.GetLeftAndRightWeights();
             double marge = Weight * 0.20;
             bool balanced = weights.Item1 > weights.Item2
@@ -104,7 +103,7 @@ namespace Algoritmiek.Containervervoer
             Console.WriteLine($"The minimum dry containers to be placed is: {minDryContainers}. " + "This goal is " + (minimumDryContainersPlacedIsMet ? string.Empty : "not ") + "met");
             Console.WriteLine($"The minimum valuable containers to be placed is: {minValuableContainers}. " + "This goal is " + (minimumValuableContainersPlacedIsMet ? string.Empty : "not ") + "met");
             Console.WriteLine($"The minimum reefer containers to be placed is: {minReeferContainers}. " + "This goal is " + (minimumReeferContainersPlacedIsMet ? string.Empty : "not ") + "met");
-            Console.WriteLine("The freighter is " + (minimumWeightIsMet ? string.Empty : "not ") + "allowed to set sail because the 50% minimum weight is " + (minimumWeightIsMet ? string.Empty : "not ") + "met.");
+            Console.WriteLine("The 50% minimum weight is " + (minimumWeightIsMet ? string.Empty : "not ") + "met.");
             Console.WriteLine($"The maximum weight difference is 20% and the current weight difference is {weightDifferenceInPercentage:P2}.");
             Console.WriteLine("The freighter is " + (balanced ? string.Empty : "not ") + "balanced.");
             Console.WriteLine();
@@ -114,6 +113,12 @@ namespace Algoritmiek.Containervervoer
             Console.WriteLine($"From the {dryContainerCount} dry containers. {dryContainerCount - dryContainers.Count} were sorted and {dryContainers.Count} are left over.");
             Console.WriteLine($"From the {valuableContainerCount} valuable containers. {valuableContainerCount - valuableContainers.Count} were sorted and {valuableContainers.Count} are left over.");
             Console.WriteLine($"From the {reeferContainerCount} reefer containers. {reeferContainerCount - reeferContainers.Count} were sorted and {reeferContainers.Count} are left over.");
+            Console.WriteLine();
+            bool isAllowedToSetSail = balanced && minimumWeightIsMet && minimumDryContainersPlacedIsMet &&
+                                      minimumValuableContainersPlacedIsMet && minimumReeferContainersPlacedIsMet;
+            Console.ForegroundColor = isAllowedToSetSail ? ConsoleColor.Green : ConsoleColor.DarkRed;
+            Console.WriteLine("The freighter is " + (isAllowedToSetSail ? string.Empty : "not ") + "allowed to set sail.");
+            Console.ResetColor();
         }
 
         /// <summary>

@@ -16,7 +16,6 @@ namespace Algoritmiek.Circustrein
         /// <param name="train">The train to print</param>
         public static void Print(Train train)
         {
-            // print header
             Console.WriteLine("Train");
             string header = $"{TableSplitter} Number {TableSplitter} Animals {TableSplitter} Cost {TableSplitter}";
             Console.WriteLine("".PadRight(header.Length, '-'));
@@ -42,7 +41,6 @@ namespace Algoritmiek.Circustrein
             {
                 PrintTrainCarriage(trainCarriage);
             }
-            // foreach carriage print train carriage
         }
 
         /// <summary>
@@ -69,6 +67,5 @@ namespace Algoritmiek.Circustrein
             Console.WriteLine("".PadRight(header.Length, '-'));
             Console.WriteLine();
         }
-
     }
 }
