@@ -1,4 +1,6 @@
-﻿namespace Algoritmiek.Containervervoer
+﻿using System;
+
+namespace Algoritmiek.Containervervoer
 {
     /// <summary>
     /// Represents 
@@ -10,9 +12,15 @@
         /// </summary>
         public readonly double Weight;
 
-        public Freight(double weight)
+        /// <summary>
+        /// The type of freight.
+        /// </summary>
+        public readonly FreightType FreightType;
+
+        public Freight(double weight, FreightType freightType)
         {
             Weight = weight;
+            FreightType = freightType;
         }
     }
 }

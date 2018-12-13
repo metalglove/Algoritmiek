@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Algoritmiek.Containervervoer
 {
@@ -18,15 +17,15 @@ namespace Algoritmiek.Containervervoer
         public List<Container> Containers { get; }
 
         /// <summary>
-        /// Gets the freighter for the containers to be sorted on.
+        /// Gets or sets the freighter for the containers to be sorted on.
         /// </summary>
-        public Freighter Freighter { get; }
+        public Freighter Freighter { get; private set; }
 
         /// <inheritdoc cref="IProgram.Name"/>
         public string Name => GetType().Name;
 
         /// <inheritdoc cref="IProgram.Description" />
-        public string Description => "Sort freight into containers and onto the freighter accordingly.";
+        public string Description => "Sort containers onto the freighter accordingly.";
 
         /// <inheritdoc cref="IProgram.HasSetupRan"/>
         public bool HasSetupRan { get; private set; }
@@ -34,83 +33,190 @@ namespace Algoritmiek.Containervervoer
         public ContainervervoerProgram()
         {
             Containers = new List<Container>();
-            Freighter = new Freighter(6, 4, 6);
         }
 
         /// <inheritdoc />
         public void Setup()
         {
             HasSetupRan = true;
-            Containers.Add(new DryContainer(new Freight(2_000)));
-            Containers.Add(new DryContainer(new Freight(2_000)));
-            Containers.Add(new DryContainer(new Freight(2_000)));
-            Containers.Add(new DryContainer(new Freight(2_000)));
-            Containers.Add(new DryContainer(new Freight(2_000)));
-            Containers.Add(new DryContainer(new Freight(2_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(6_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(5_000)));
-            Containers.Add(new DryContainer(new Freight(8_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(26_000)));
-            Containers.Add(new DryContainer(new Freight(20_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new DryContainer(new Freight(24_000)));
-            Containers.Add(new ValuableContainer(new Freight(24_000)));
-            Containers.Add(new ValuableContainer(new Freight(24_000)));
-            Containers.Add(new ValuableContainer(new Freight(24_000)));
-            Containers.Add(new ValuableContainer(new Freight(24_000)));
-            Containers.Add(new ValuableContainer(new Freight(24_000)));
-            Containers.Add(new ValuableContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
-            Containers.Add(new ReeferContainer(new Freight(24_000)));
+            Freighter = new Freighter(4, 5, 6);
+
+            #region Adds
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(6_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(8_000, FreightType.Dry)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Valuable)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+            //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Refrigerated)));
+
+            Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(2_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(6_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(5_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(8_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(20_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Refrigerated)));
+            #endregion Adds
+
         }
 
         /// <inheritdoc />
         public void Run()
         {
-            Freighter.Sort(Containers);
-            FreighterPrinter.PrintFreighter(Freighter);
+            Freighter.Sort(Containers, 0, 0, 0);
         }
     }
 }

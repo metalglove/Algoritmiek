@@ -5,9 +5,8 @@
     /// </summary>
     public enum FreightType
     {
-        Default,
+        Dry,
         Valuable,
-        Ventilated,
         Refrigerated
     }
 }
