@@ -38,7 +38,7 @@ namespace Algoritmiek.Containervervoer
         /// <inheritdoc />
         public void Setup()
         {
-            Freighter = new Freighter(4, 5, 6);
+            Freighter = new Freighter(6, 5, 6);
 
             #region Adds
             //Containers.Add(ContainerFactory.Create(new Freight(26_000, FreightType.Dry)));
@@ -173,6 +173,12 @@ namespace Algoritmiek.Containervervoer
             Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
             Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
             Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Dry)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
+            Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
             Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
             Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));
             Containers.Add(ContainerFactory.Create(new Freight(24_000, FreightType.Valuable)));

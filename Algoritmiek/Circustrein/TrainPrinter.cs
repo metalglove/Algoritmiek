@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Algoritmiek.Circustrein
 {
@@ -51,7 +49,7 @@ namespace Algoritmiek.Circustrein
         /// Prints the train carriage to the console.
         /// </summary>
         /// <param name="trainCarriage">the train carriage to print.</param>
-        public static void PrintTrainCarriage(TrainCarriage trainCarriage)
+        private static void PrintTrainCarriage(TrainCarriage trainCarriage)
         {
             
             string header = $"{TableSplitter} EatingBehaviour {TableSplitter} Size   {TableSplitter} Count {TableSplitter} Cost {TableSplitter}";

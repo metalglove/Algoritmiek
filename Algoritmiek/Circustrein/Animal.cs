@@ -19,7 +19,7 @@
         /// Initializes the a new instance of the <see cref="Animal"/> struct.
         /// </summary>
         /// <param name="size">The size of the animal.</param>
-        /// <param name="eatBehaviour">The eating behaviour of the animal.</param>
+        /// <param name="eatingBehaviour">The eating behaviour of the animal.</param>
         public Animal(Size size, EatingBehaviour eatingBehaviour)
         {
             Size = size;

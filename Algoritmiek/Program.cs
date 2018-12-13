@@ -31,7 +31,7 @@ namespace Algoritmiek
         private static IEnumerable<IProgram> GetPrograms()
         {
             // Each algorithmic assignment will end up here. (more to come!)
-            //yield return new CircusTrainProgram();
+            yield return new CircusTrainProgram();
             yield return new ContainervervoerProgram();
         }
     }

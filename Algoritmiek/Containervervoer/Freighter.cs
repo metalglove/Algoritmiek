@@ -65,19 +65,17 @@ namespace Algoritmiek.Containervervoer
             if (dryContainersPlacedCount < minDryContainers)
             {
                 int minimumContainersToPlace = minDryContainers - dryContainersPlacedCount;
-                ContainerDeck.TryAddDryContainersOnTop(ref dryContainers, minimumContainersToPlace, minValuableContainers);
+                ContainerDeck.TryAddContainersOnTop(ref dryContainers, minimumContainersToPlace);
                 dryContainersPlacedCount = dryContainerCount - dryContainers.Count;
             }
 
             ContainerDeck.TryAddAllContainers(ref valuableContainers);
 
-            //ContainerDeck.TryAddAllValuableContainers(ref valuableContainers);
-
             int valuableContainersPlacedCount = valuableContainerCount - valuableContainers.Count;
             if (valuableContainersPlacedCount < minValuableContainers)
             {
                 int minimumContainersToPlace = minValuableContainers - valuableContainersPlacedCount;
-                //ContainerDeck.TryAddValuableContainersOnTopOfReeferContainers(ref valuableContainers, minimumContainersToPlace, minReeferContainers);
+                ContainerDeck.TryAddContainersOnTop(ref valuableContainers, minimumContainersToPlace);
                 valuableContainersPlacedCount = valuableContainerCount - valuableContainers.Count;
             }
 
@@ -85,7 +83,7 @@ namespace Algoritmiek.Containervervoer
             if (reeferContainersPlacedCount < minReeferContainers)
             {
                 int minimumContainersToPlace = minReeferContainers - reeferContainersPlacedCount;
-                //ContainerDeck.TryAddLastRequiredReeferContainers(ref reeferContainers, minimumContainersToPlace);
+                ContainerDeck.TryAddContainersOnTop(ref reeferContainers, minimumContainersToPlace);
                 reeferContainersPlacedCount = reeferContainerCount - reeferContainers.Count;
             }
 
@@ -103,13 +101,12 @@ namespace Algoritmiek.Containervervoer
             double weightDifferenceInPercentage = weightDifference / Weight;
             bool minimumWeightIsMet = Weight >= MaximumWeight / 2;
 
-            bool minimumDryContainersPlacedIsMet = dryContainersPlacedCount > minDryContainers;
-            bool minimumReeferContainersPlacedIsMet = reeferContainersPlacedCount > minReeferContainers;
-            bool minimumValuableContainersPlacedIsMet = valuableContainersPlacedCount > minValuableContainers;
+            bool minimumDryContainersPlacedIsMet = dryContainersPlacedCount >= minDryContainers;
+            bool minimumReeferContainersPlacedIsMet = reeferContainersPlacedCount >= minReeferContainers;
+            bool minimumValuableContainersPlacedIsMet = valuableContainersPlacedCount >= minValuableContainers;
             Console.WriteLine($"The minimum dry containers to be placed is: {minDryContainers}. " + "This goal is " + (minimumDryContainersPlacedIsMet ? string.Empty : "not ") + "met");
             Console.WriteLine($"The minimum valuable containers to be placed is: {minValuableContainers}. " + "This goal is " + (minimumValuableContainersPlacedIsMet ? string.Empty : "not ") + "met");
             Console.WriteLine($"The minimum reefer containers to be placed is: {minReeferContainers}. " + "This goal is " + (minimumReeferContainersPlacedIsMet ? string.Empty : "not ") + "met");
-
             Console.WriteLine("The freighter is " + (minimumWeightIsMet ? string.Empty : "not ") + "allowed to set sail because the 50% minimum weight is " + (minimumWeightIsMet ? string.Empty : "not ") + "met.");
             Console.WriteLine($"The maximum weight difference is 20% and the current weight difference is {weightDifferenceInPercentage:P2}.");
             Console.WriteLine("The freighter is " + (balanced ? string.Empty : "not ") + "balanced.");

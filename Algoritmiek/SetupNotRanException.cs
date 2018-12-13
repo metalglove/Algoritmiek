@@ -7,8 +7,5 @@ namespace Algoritmiek
     /// </summary>
     public class SetupNotRanException : Exception
     {
-        public SetupNotRanException()
-        {
-        }
     }
 }

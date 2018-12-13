@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Algoritmiek.Circustrein;
+﻿using Algoritmiek.Circustrein;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AlgoritmiekTests.Assignments.Circustrein
