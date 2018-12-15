@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Algoritmiek.Circustrein;
 using Algoritmiek.Containervervoer;
+using Algoritmiek.DailyCodingProblem;
 using Algoritmiek.Utilities;
 
 namespace Algoritmiek
@@ -19,7 +20,7 @@ namespace Algoritmiek
         /// <param name="args">The executing arguments (none used for this program).</param>
         public static void Main(string[] args)
         {
-            BenchmarkRunner benchmarkRunner = new BenchmarkRunner(programs: GetPrograms(), runs: 1);
+            BenchmarkRunner benchmarkRunner = new BenchmarkRunner(programs: GetPrograms(), runs: 100_000);
             benchmarkRunner.Run();
             Console.ReadKey();
         }
@@ -31,6 +32,7 @@ namespace Algoritmiek
         private static IEnumerable<IProgram> GetPrograms()
         {
             // Each algorithmic assignment will end up here. (more to come!)
+            yield return new December132018();
             yield return new CircusTrainProgram();
             yield return new ContainervervoerProgram();
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Algoritmiek.Circustrein
 {
@@ -90,6 +91,12 @@ namespace Algoritmiek.Circustrein
             HasSetupRan = true;
         }
 
+        /// <inheritdoc />
+        public void Print()
+        {
+            TrainPrinter.Print(Train);
+        }
+
         /// <summary>
         /// Runs the animal sorting algorithm.
         /// </summary>
@@ -98,7 +105,6 @@ namespace Algoritmiek.Circustrein
             if (!HasSetupRan)
                 throw new SetupNotRanException();
             Train.Sort(Animals);
-            TrainPrinter.Print(Train);
         }
     }
 }

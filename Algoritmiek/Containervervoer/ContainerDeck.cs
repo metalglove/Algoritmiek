@@ -107,6 +107,21 @@ namespace Algoritmiek.Containervervoer
         }
 
         /// <summary>
+        /// Gets the containers on the container deck.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Container> GetContainers()
+        {
+            for (int x = 0; x < Length; x++)
+            for (int y = 0; y < Width; y++)
+            for (int z = 0; z < Height; z++)
+            {
+                if (this[x, y, z] == null) continue;
+                yield return this[x, y, z];
+            }
+        }
+
+        /// <summary>
         /// Gets the left and right weight of the freighter as a tuple.
         /// </summary>
         /// <returns>The left and right weight of the freighter as a tuple</returns>

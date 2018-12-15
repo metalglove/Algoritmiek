@@ -1,4 +1,6 @@
-﻿namespace Algoritmiek
+﻿using System;
+
+namespace Algoritmiek
 {
     /// <summary>
     /// Represents methods used for programs that require a setup mechanism.
@@ -34,5 +36,10 @@
         /// This method must be called before <see cref="Run"/> is called.
         /// </summary>
         void Setup();
+
+        /// <summary>
+        /// Prints the results.
+        /// </summary>
+        void Print();
     }
 }
