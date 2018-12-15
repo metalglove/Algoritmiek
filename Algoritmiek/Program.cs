@@ -20,7 +20,7 @@ namespace Algoritmiek
         /// <param name="args">The executing arguments (none used for this program).</param>
         public static void Main(string[] args)
         {
-            BenchmarkRunner benchmarkRunner = new BenchmarkRunner(programs: GetPrograms(), runs: 100_000);
+            BenchmarkRunner benchmarkRunner = new BenchmarkRunner(programs: GetPrograms(), runs: 500_000);
             benchmarkRunner.Run();
             Console.ReadKey();
         }

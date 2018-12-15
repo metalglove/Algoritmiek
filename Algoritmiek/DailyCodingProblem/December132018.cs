@@ -35,14 +35,20 @@ namespace Algoritmiek.DailyCodingProblem
             int highestNumber = 1;
             for (int i = 0; i < Numbers.Length; i++)
             {
-                highestNumber = Numbers[i] > highestNumber ? Numbers[i] : highestNumber;
+                if (Numbers[i] > highestNumber)
+                    highestNumber = Numbers[i];
                 for (int j = 1; j < Numbers.Length; j++)
                 {
                     if (Numbers.Length == i + 1 || Numbers[i] + j == Numbers[i + 1] && Numbers[i] + j > 0) break;
-                    Output = Numbers[i] + j > 0 && Numbers[i] + j < Output || Output == 0 && Numbers[i] + j > 0 ? Numbers[i] + j : Output;
+                    if (Numbers[i] + j > 0 && Numbers[i] + j < Output)
+                        Output = Numbers[i] + j;
+                    else if (Output == 0 && Numbers[i] + j > 0)
+                            Output = Numbers[i] + j;
                 }
             }
-            Output = Output == 0 ? highestNumber + 1 : Output;
+
+            if (Output == 0)
+                Output = highestNumber + 1;
         }
 
         /// <inheritdoc />

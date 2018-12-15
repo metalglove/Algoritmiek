@@ -52,24 +52,31 @@ namespace Algoritmiek.Utilities
         /// </summary>
         public void Run(bool displayTimings = false, bool displayEvents = false)
         {
+            // TODO: fix Task based or either Thread based benchmarking...
             List<Task> tasks = new List<Task>();
+            Console.WriteLine(Stopwatch.IsHighResolution
+                ? "Operations timed using the system's high-resolution performance counter."
+                : "Operations timed using the DateTime class.");
+            Console.WriteLine($"  Timer frequency in ticks per second = {Stopwatch.Frequency}");
+            Console.WriteLine("  Timer is accurate within {0} nanoseconds", (1000L * 1000L * 1000L) / Stopwatch.Frequency);
             Console.WriteLine("Running...");
             foreach (IProgram program in _programs)
             {
                 if (!_concurrentDictionary.ContainsKey(program.GetType()))
                     _concurrentDictionary.TryAdd(program.GetType(), new List<Benchmark>());
-
+                int j = 1;
                 for (int i = 0; i < _runs + WarmupRuns; i++)
                 {
-                    var i1 = i;
+                    int j1 = j == 9 ? (j = 1) : j;
                     tasks.Add(Task.Run(() =>
                     {
                         IProgram newProgram = (IProgram)Activator.CreateInstance(program.GetType());
-                        BenchmarkAction(newProgram.GetType(), newProgram.Setup, displayTimings, displayEvents)
+                        BenchmarkAction(newProgram.GetType(), newProgram.Setup, j1, false, false, displayTimings, displayEvents)
                             .ContinueWith(task =>
-                                BenchmarkAction(newProgram.GetType(), newProgram.Run, displayTimings, displayEvents))
+                                BenchmarkAction(newProgram.GetType(), newProgram.Run, j1, false, false, displayTimings, displayEvents))
                             .ConfigureAwait(false);
                     }));
+                    j++;
                 }
             }
 
@@ -94,13 +101,17 @@ namespace Algoritmiek.Utilities
         /// <param name="actionName">The name of the action to display the benchmark information for.</param>
         private void DisplayBenchmarkInformation(IProgram program, string actionName)
         {
+            long nanoSecondsPerTick = (1000L * 1000L * 1000L) / Stopwatch.Frequency;
             double averageBenchmarkInMilliseconds = GetBenchmarksFor(program, actionName).Skip(WarmupRuns).Average(bench => bench.TotalMilliseconds);
+            double averageBenchmarkInTicks = GetBenchmarksFor(program, actionName).Skip(WarmupRuns).Average(bench => bench.Ticks);
             double maxBenchmarkInMilliseconds = GetBenchmarksFor(program, actionName).Skip(WarmupRuns).Max(bench => bench.TotalMilliseconds);
+            long maxBenchmarkInTicks = GetBenchmarksFor(program, actionName).Skip(WarmupRuns).Max(bench => bench.Ticks);
             double minBenchmarkInMilliseconds = GetBenchmarksFor(program, actionName).Skip(WarmupRuns).Min(bench => bench.TotalMilliseconds);
+            long minBenchmarkInTicks = GetBenchmarksFor(program, actionName).Skip(WarmupRuns).Min(bench => bench.Ticks);
             Console.WriteLine($"{actionName} timing:");
-            Console.WriteLine($"Max: {maxBenchmarkInMilliseconds}ms"); 
-            Console.WriteLine($"Min: {minBenchmarkInMilliseconds}ms");
-            Console.WriteLine($"Average: {averageBenchmarkInMilliseconds}ms");
+            Console.WriteLine($"Max: {maxBenchmarkInMilliseconds}ms, {maxBenchmarkInTicks * nanoSecondsPerTick}ns, {maxBenchmarkInTicks}ticks"); 
+            Console.WriteLine($"Min: {minBenchmarkInMilliseconds}ms, {minBenchmarkInTicks * nanoSecondsPerTick}ns, {minBenchmarkInTicks}ticks");
+            Console.WriteLine($"Average: {averageBenchmarkInMilliseconds}ms, {averageBenchmarkInTicks * nanoSecondsPerTick}ns, {averageBenchmarkInTicks}ticks");
         }
 
         /// <summary>
@@ -111,29 +122,49 @@ namespace Algoritmiek.Utilities
         /// <returns>The benchmarks for the given <see cref="IProgram"/> and action that has ran.</returns>
         private IEnumerable<Benchmark> GetBenchmarksFor(IProgram program, string actionName)
         {
-            return _concurrentDictionary[program.GetType()].Where(bench => bench.Action.Equals(actionName));
+            return _concurrentDictionary[program.GetType()].Where(bench => bench.Action == actionName);
         }
 
         /// <summary>
         /// Benchmarks the given <see cref="Action"/>.
         /// </summary>
-        /// <param name="programType"></param>
+        /// <param name="programType">The type of program that is being benchmarked.</param>
         /// <param name="action">The action to be benchmarked.</param>
+        /// <param name="processorAffinityCore">The core the process should be running on.</param>
+        /// <param name="useHighPriorityOnThreads">A value indicating whether the thread should run with high priority.</param>
+        /// <param name="useGarbageCollection">A value indicating whether the benchmark action should be run after a garbage collection.</param>
         /// <param name="displayTimings">A value indicating whether the benchmark timings should be written to the <see cref="Console"/>.</param>
         /// <param name="displayEvents">A value indicating whether the events should be written to the <see cref="Console"/>.</param>
-        private Task BenchmarkAction(Type programType, Action action, bool displayTimings, bool displayEvents = false)
+        private Task BenchmarkAction(Type programType, Action action, int processorAffinityCore = 2, bool useHighPriorityOnThreads = false, bool useGarbageCollection = false, bool displayTimings = false, bool displayEvents = false)
         {
             if (displayEvents)
                 Console.WriteLine($"Started: {action.Method.DeclaringType.Name}.{action.Method.Name}");
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+
+            if (useHighPriorityOnThreads)
+            {
+                Process.GetCurrentProcess().ProcessorAffinity = new IntPtr(processorAffinityCore);
+                Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
+                Thread.CurrentThread.Priority = ThreadPriority.Highest;
+            }
+            
+            if (useGarbageCollection)
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+            }
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
             action.Invoke();
             stopwatch.Stop();
+
             if (displayTimings)
                 DisplayTimings(stopwatch);
+
             if (displayEvents)
                 Console.WriteLine($"Finished: {action.Method.DeclaringType.Name}.{action.Method.Name}");
-            _concurrentDictionary[programType].Add(new Benchmark(action: action.Method.Name, totalMilliseconds: stopwatch.Elapsed.TotalMilliseconds));
+
+            _concurrentDictionary[programType].Add(new Benchmark(action: action.Method.Name, totalMilliseconds: stopwatch.Elapsed.TotalMilliseconds, ticks: stopwatch.ElapsedTicks));
             return Task.CompletedTask;
         }
 
@@ -160,6 +191,7 @@ namespace Algoritmiek.Utilities
             Console.WriteLine($"Time elapsed (s): {stopwatch.Elapsed.TotalSeconds}");
             Console.WriteLine($"Time elapsed (ms): {stopwatch.Elapsed.TotalMilliseconds}");
             Console.WriteLine($"Time elapsed (ns): {stopwatch.Elapsed.TotalMilliseconds * 1_000_000}");
+            Console.WriteLine($"Time elapsed (ticks): {stopwatch.Elapsed.Ticks}");
         }
     }
 }
